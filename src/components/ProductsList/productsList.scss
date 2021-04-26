@@ -1,0 +1,19 @@
+.products {
+  text-align: center;
+
+  &__item {
+    list-style-type: none;
+  }
+
+  &__name {
+    text-transform: uppercase;
+    font-weight: 400;
+  }
+
+  &__button {
+    padding: 5px 20px;
+    text-transform: uppercase;
+    background-color: coral;
+    border: none;
+  }
+}

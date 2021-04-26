@@ -1,0 +1,94 @@
+import React, { useEffect, useState } from 'react';
+import { Switch, Route } from 'react-router-dom';
+import { useLocaleStorage } from './customHooks/useLocaleStorage';
+import { Navigation } from './components/Navigation';
+import { ProductsList } from './components/ProductsList';
+import { Basket } from './components/Basket';
+import './App.scss';
+
+const productsList = [
+  {
+    "id":1,
+    "name":"article 1",
+    "label":"Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "price":25,
+  },
+  {
+    "id":2,
+    "name":"article 2",
+    "label":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "price":35,
+  },
+  {
+    "id":3,
+    "name":"article 3",
+    "label":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "price":45,
+  },
+];
+
+const App = () => {
+  const [addedProducts, setAddedProducts] = useState(JSON.parse(localStorage.getItem('data')) || []);
+  const [storageProd, setStorageProd] = useLocaleStorage('data', []);
+
+  const addProduct = (productId) => {
+    const product = productsList.find(item => item.id === productId);
+    setAddedProducts([...addedProducts, product]);
+  }
+
+  const remove = (productId) => {
+    const index = addedProducts.findIndex(product => product.id === productId);
+
+    if (index >= 0) {
+      setAddedProducts(prevState => (
+        [
+          ...prevState.slice(0, index),
+          ...prevState.slice(index + 1)
+        ]
+      ))
+    }
+
+  }
+
+  const removeAll = (productId) => {
+    setAddedProducts(prevState => prevState.filter(prod => prod.id !== productId));
+  }
+
+  const clearBasket = () => {
+    setAddedProducts([]);
+    localStorage.clear();
+  }
+
+  useEffect(() => {
+    setStorageProd(addedProducts);
+  }, [addedProducts, storageProd, setStorageProd]);
+
+  return (
+    <>
+      <header className="header">
+        <Navigation />
+      </header>
+      <main className="main">
+        <Switch>
+          <Route path="/" exact>
+            <ProductsList
+              productsList={productsList}
+              addProduct={addProduct}
+            />
+          </Route>
+          <Route path="/basket">
+            <Basket
+              storageProd={storageProd}
+              addedProducts={addedProducts}
+              remove={remove}
+              removeAll={removeAll}
+              clearBasket={clearBasket}
+            />
+          </Route>
+        </Switch>
+      </main>
+    </>
+  )
+}
+
+export default App;
