@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import './productsList.scss';
 
 export const ProductsList = ({ addProduct, productsList }) => {
@@ -16,4 +18,16 @@ export const ProductsList = ({ addProduct, productsList }) => {
         }
       </ul>
   )
+};
+
+ProductsList.propTypes = {
+  addProduct: PropTypes.func.isRequired,
+  productsList: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      name: PropTypes.string.isRequired,
+      label: PropTypes.string.isRequired,
+      price: PropTypes.number.isRequired,
+    }).isRequired,
+  ).isRequired,
 };

@@ -36,8 +36,8 @@ const App = () => {
     setAddedProducts([...addedProducts, product]);
   }
 
-  const remove = (productId) => {
-    const index = addedProducts.findIndex(product => product.id === productId);
+  const remove = (productName) => {
+    const index = addedProducts.findIndex(product => product.name === productName);
 
     if (index >= 0) {
       setAddedProducts(prevState => (
@@ -47,11 +47,10 @@ const App = () => {
         ]
       ))
     }
-
   }
 
-  const removeAll = (productId) => {
-    setAddedProducts(prevState => prevState.filter(prod => prod.id !== productId));
+  const removeAll = (productName) => {
+    setAddedProducts(prevState => prevState.filter(prod => prod.name !== productName));
   }
 
   const clearBasket = () => {
